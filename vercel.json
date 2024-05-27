@@ -8,7 +8,7 @@
         },
         {
             "src": "prisma/schema.prisma",
-            "use": "prisma"
+            "use": "@prisma/cli"
         }
     ],
     "routes": [
