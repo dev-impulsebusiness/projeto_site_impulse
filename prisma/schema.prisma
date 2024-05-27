@@ -1,0 +1,293 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Employee {
+  id                Int           @id @default(autoincrement())
+  nome              String
+  rg                String
+  cpf               String        @unique
+  dataNascimento    DateTime
+  email             String        @unique
+  telefoneWapp      String
+  salario           String?
+  codBanco          String?
+  agenciaBanco      String?
+  contaBanco        String?
+  pixBanco          String?
+  dataContratacao   DateTime
+  modeloContratacao String
+  nivel             String?
+  estagio           String?
+  escolaVinculo     String?
+  horasAlocadas     Int
+  dataDemissao      DateTime?
+  status            String
+  rua               String
+  numero            String
+  complemento       String?
+  bairro            String
+  cidade            String
+  estado            String
+  cep               String
+  dia_pgto          String?
+  fk_cargoId        Int?
+  fk_departamentoId Int?
+  formulario1       Form1[]
+  formulario2       Form2[]
+  cargo             Cargo?        @relation(fields: [fk_cargoId], references: [id])
+  departamento      Departamento? @relation(fields: [fk_departamentoId], references: [id])
+
+  @@map("funcionarios")
+}
+
+model Client {
+  id                  Int           @id @default(autoincrement())
+  nome                String
+  cnpj                String        @unique
+  razaoSocial         String
+  endereco            String?
+  numero              String?
+  complemento         String?
+  bairro              String?
+  cidade              String?
+  emailResponsavel    String
+  nomeResponsavel     String
+  telefoneResponsavel String?
+  situacao            String
+  cep                 String?
+  estado              String?
+  acquisition         Acquisition[]
+
+  @@map("clientes")
+}
+
+model Acquisition {
+  id             Int       @id @default(autoincrement())
+  pastaCliente   String?
+  nomeServico    String?
+  dataAdquirido  DateTime?
+  dataPrevista   DateTime?
+  dataFinalizada DateTime?
+  situacao       String?
+  valorMensal    String?
+  fk_clientId    Int
+  descricao      String?
+  client         Client    @relation(fields: [fk_clientId], references: [id], onDelete: Cascade)
+
+  @@map("aquisicoes")
+}
+
+model Product {
+  id        Int    @id @default(autoincrement())
+  nome      String
+  segmento  String
+  descricao String
+
+  @@map("produtos")
+}
+
+model User {
+  id                            Int                             @id @default(autoincrement())
+  nome                          String
+  email                         String                          @unique
+  senha                         String
+  created_at                    DateTime                        @default(now())
+  passwordResetExpires          DateTime?
+  passwordResetToken            String?
+  UsersRoles                    UsersRoles?
+  Notificacao                   Notificacao[]
+  ControleNotificacoes          ControleNotificacoes[]
+  NotificacaoAgendada           NotificacaoAgendada[]
+  ControleNotificacoesAgendadas ControleNotificacoesAgendadas[]
+
+  @@map("usuarios")
+}
+
+model Roles {
+  id               Int                @id @default(autoincrement())
+  nome             String
+  descricao        String
+  created_at       DateTime           @default(now())
+  RolesPermissions RolesPermissions[]
+  UsersRoles       UsersRoles[]
+
+  @@map("funcoes")
+}
+
+model Permissions {
+  id               Int                @id @default(autoincrement())
+  nome             String
+  descricao        String
+  created_at       DateTime           @default(now())
+  RolesPermissions RolesPermissions[]
+
+  @@map("permissoes")
+}
+
+model UsersRoles {
+  id         Int      @id @default(autoincrement())
+  fk_UserId  Int      @unique
+  fk_RoleId  Int
+  created_at DateTime @default(now())
+  role       Roles    @relation(fields: [fk_RoleId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [fk_UserId], references: [id], onDelete: Cascade)
+}
+
+model RolesPermissions {
+  id              Int         @id @default(autoincrement())
+  fk_RoleId       Int
+  fk_PermissionId Int
+  created_at      DateTime    @default(now())
+  permission      Permissions @relation(fields: [fk_PermissionId], references: [id], onDelete: Cascade)
+  role            Roles       @relation(fields: [fk_RoleId], references: [id], onDelete: Cascade)
+}
+
+model Form1 {
+  id            Int      @id @default(autoincrement())
+  email         String
+  question1     String?
+  question2     String?
+  question3     String?
+  question4     String?
+  question5     String?
+  question6     String?
+  question7     String?
+  question8     String?
+  question9     String?
+  created_at    DateTime @unique @default(now())
+  fk_employeeId Int
+  Employee      Employee @relation(fields: [fk_employeeId], references: [id], onDelete: Cascade)
+
+  @@map("formulario1")
+}
+
+model Form2 {
+  id            Int      @id @default(autoincrement())
+  email         String
+  question1     String?
+  question2     String?
+  question3     String?
+  question4     String?
+  question5     String?
+  question6     String?
+  question7     String?
+  question8     String?
+  question9     String?
+  question10    String?
+  created_at    DateTime @default(now())
+  fk_employeeId Int
+  Employee      Employee @relation(fields: [fk_employeeId], references: [id], onDelete: Cascade)
+
+  @@map("formulario2")
+}
+
+model Acess {
+  id                Int           @id @default(autoincrement())
+  titulo            String
+  url               String
+  login             String
+  senha             String
+  fk_departamentoId Int?
+  departamento      Departamento? @relation(fields: [fk_departamentoId], references: [id])
+
+  @@map("acessos")
+}
+
+model TrabalheConosco {
+  id            Int      @id @default(autoincrement())
+  nome          String
+  telefone      String
+  email         String
+  vagaEscolhida String
+  nivelAtual    String
+  pretensao     String
+  motivo        String?
+  anexo         String?
+  createdAt     DateTime @default(now())
+  updateAt      DateTime @default(now())
+  cargo         String?  @db.VarChar(255)
+  departamento  String?  @db.VarChar(255)
+  comentario    String?  @db.VarChar(255)
+  scores        scores[]
+}
+
+model Cargo {
+  id           Int        @id @default(autoincrement())
+  nome         String
+  descricao    String?
+  funcionarios Employee[]
+}
+
+model Departamento {
+  id           Int        @id @default(autoincrement())
+  nome         String
+  descricao    String?
+  Acess        Acess[]
+  funcionarios Employee[]
+}
+
+model omie {
+  id        BigInt   @id(map: "indicadores_omie_pkey") @default(autoincrement())
+  indicador String   @db.VarChar(255)
+  valor     Decimal? @db.Decimal(12, 2)
+  mesref    String?  @db.VarChar(12)
+}
+
+model scores {
+  id              Int             @id(map: "Observacoes_pkey") @default(autoincrement())
+  softskills      String?
+  fk_candidatoId  Int
+  score           Int?            @default(0)
+  TrabalheConosco TrabalheConosco @relation(fields: [fk_candidatoId], references: [id], map: "Observacoes_fk_candidatoId_fkey", onDelete: Cascade)
+}
+
+model Notificacao {
+  id        Int      @id @default(autoincrement())
+  titulo    String
+  conteudo  String
+  createdAt DateTime @default(now())
+  fk_UserId Int?
+
+  Usuario              User?                  @relation(fields: [fk_UserId], references: [id])
+  ControleNotificacoes ControleNotificacoes[]
+}
+
+model ControleNotificacoes {
+  id        Int      @id @default(autoincrement())
+  fk_UserId Int
+  fk_NotfId Int
+  createdAt DateTime @default(now())
+  check     Boolean
+
+  Usuario     User        @relation(fields: [fk_UserId], references: [id], onDelete: Cascade)
+  Notificacao Notificacao @relation(fields: [fk_NotfId], references: [id], onDelete: Cascade)
+}
+
+model NotificacaoAgendada {
+  id           Int      @id @default(autoincrement())
+  titulo       String
+  conteudo     String
+  createdAt    DateTime @default(now())
+  dataAgendada DateTime
+  fk_UserId    Int?
+
+  Usuario                       User?                           @relation(fields: [fk_UserId], references: [id])
+  ControleNotificacoesAgendadas ControleNotificacoesAgendadas[]
+}
+
+model ControleNotificacoesAgendadas {
+  id                Int      @id @default(autoincrement())
+  fk_UserId         Int
+  fk_NotAgendadafId Int
+  createdAt         DateTime @default(now())
+  check             Boolean
+
+  Usuario             User                @relation(fields: [fk_UserId], references: [id], onDelete: Cascade)
+  NotificacaoAgendada NotificacaoAgendada @relation(fields: [fk_NotAgendadafId], references: [id], onDelete: Cascade)
+}

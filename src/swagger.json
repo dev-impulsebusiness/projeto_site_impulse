@@ -1,0 +1,135 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "ERP Impulse Documentação",
+        "description": "Esta é a API do ERP da Impulse",
+        "version": "1.0.0",
+        "contact": {
+            "email": "daniel.impulseb@gmail.com"
+        }
+    },
+    "paths": {
+        "/user/create":{
+            "post": {
+                "tags": ["Usuário"],
+                "summary": "Criar Usuário",
+                "description": "Rota para criaçãode um novo usuário do sistema",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nome": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "senha": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "nome": "Nome do usuário",
+                                    "email": "usuario@teste.com.br",
+                                    "senha": "123456"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Usuário cadastrado"
+                    },
+                    "400": {
+                        "description": "Campos obrigatórios não enviados!"
+                    },
+                    "409": {
+                        "description": "Email já utilizado por outro usuário!"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                }
+            }
+        },
+        "/search/users": {
+            "get": {
+                "tags": ["Usuário"],
+                "summary": "Buscar Usuários",
+                "description": "Rota para listagem de usuários do sistema",
+                "responses": {
+                    "200":{
+                        "description": "Lista de usuários obtido com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "nome":{
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type":"string"
+                                            },
+                                            "funcao": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                }
+            }
+        },
+        "/user/{id}": {
+            "get": {
+                "tags": ["Usuário"],
+                "summary": "Buscar Usuário por id",
+                "description": "Rota para listar de usuário do sistema correspondente ao id",
+                "responses": {
+                    "200":{
+                        "description": "Usuário obtido com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object",
+                                    "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "nome":{
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type":"string"
+                                            },
+                                            "funcao": {
+                                                "type": "string"
+                                            }
+                                    }
+                                }
+                            }
+                            
+                        }
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                }
+            }
+        }
+    }
+}

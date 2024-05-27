@@ -1,0 +1,14 @@
+node_modules
+# Keep environment variables out of version control
+.env
+testeDaniel.js
+testeDanielEditar.js
+testeLaerson.js
+seed.js
+seedcopy.js
+db.txt
+testes.js
+omie.js
+google_drive.js
+googleDrive.json
+rocketredis
