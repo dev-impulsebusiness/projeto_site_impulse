@@ -1,7 +1,7 @@
 const express = require("express");
 const routes = express.Router();
 
-const controller_funcionarios = require("../controllers/controller_Funcionarios");
+//const controller_funcionarios = require("../controllers/controller_Funcionarios");
 const controller_clientes = require("../controllers/controller_Clientes");
 const controller_produtos = require("../controllers/controller_Produtos");
 const controller_aquisicoes = require("../controllers/controller_Aquisicoes");
@@ -57,7 +57,7 @@ routes.get("/pipefy",middleware_autenticacao.auth,(req, res, next)=>{
     next()},midlleware_RolePermission.verificaRole, controller_pipefy.run);
 
 // Rotas de Funcionários
-routes.post("/funcionarios",middleware_autenticacao.auth,(req, res, next)=>{
+/*routes.post("/funcionarios",middleware_autenticacao.auth,(req, res, next)=>{
     req.permission = "CriarFuncionario"
     next()},midlleware_RolePermission.verificaRole, controller_funcionarios.create);
 routes.get("/funcionarios",middleware_autenticacao.auth,(req, res, next)=>{
@@ -74,7 +74,7 @@ routes.put("/funcionarios/:id",middleware_autenticacao.auth,(req, res, next)=>{
     next()},midlleware_RolePermission.verificaRole, controller_funcionarios.updateOne);
 routes.delete("/funcionarios/:id",middleware_autenticacao.auth,(req, res, next)=>{
     req.permission = "ApagarFuncionario"
-    next()},midlleware_RolePermission.verificaRole, controller_funcionarios.deleteOne);
+    next()},midlleware_RolePermission.verificaRole, controller_funcionarios.deleteOne);*/
 
 //Rotas de Clientes
 routes.post("/clientes",middleware_autenticacao.auth,(req, res, next)=>{
