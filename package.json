@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "build": "prisma generate"
   },
   "keywords": [],
   "author": "",
@@ -18,6 +19,7 @@
     "prisma": "^5.14.0"
   },
   "dependencies": {
+    "@prisma/client": "^5.14.0",
     "axios": "^1.3.4",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
